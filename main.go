@@ -81,7 +81,7 @@ func initdb() *gorm.DB {
 	}
 	db.DB().SetMaxIdleConns(3)
 	db.DB().SetMaxOpenConns(20)
-	db = db.LogMode(true)
+	//db = db.LogMode(true)
 	db.DB().SetConnMaxLifetime(time.Duration(60) * time.Second)
 	return db
 }
