@@ -41,7 +41,7 @@ type %s struct{
 %s
 }
 
-func (*%s) TableName() string {
+func (m *%s) TableName() string {
 	return "%s"
 }
 `
@@ -62,7 +62,15 @@ func (*%s) TableName() string {
 			os.Mkdir(modelPath, os.ModeDir)
 		}
 	}
-	os.WriteFile(modelPath+"/"+filename, []byte(content), os.ModeAppend)
+	filePath := modelPath + "/" + filename
+	if _, err := os.Stat(filePath); err != nil {
+		if os.IsNotExist(err) {
+			os.WriteFile(filePath, []byte(content), os.ModeAppend)
+			return
+		}
+	}
+	os.Remove(filePath)
+	os.WriteFile(filePath, []byte(content), os.ModeAppend)
 }
 
 func translateName(name string) string {
