@@ -23,6 +23,7 @@ var dataTypes = map[string]string{
 	"text":     " string",
 	"datetime": " time.Time",
 	"date":     " time.Time",
+	//"json":     " string",
 }
 
 func main() {
@@ -48,12 +49,13 @@ func (m *%s) TableName() string {
 	str := ""
 	importStr := ""
 	for _, v := range columns {
-
 		if v.DataType == "date" || v.DataType == "datetime" {
 			importStr = `import "time"`
 		}
-		tag := fmt.Sprintf(`json:"%s" db:"%s"`, v.Name, v.Name)
-		str += "\t" + translateName(v.Name) + dataTypes[v.DataType] + "\t`" + tag + "`" + "\n"
+		tag := fmt.Sprintf(`json:"%s" gorm:"column:%s"`, v.Name, v.Name)
+		if _, ok := dataTypes[v.DataType]; ok {
+			str += "\t" + translateName(v.Name) + dataTypes[v.DataType] + "\t`" + tag + "`" + "\n"
+		}
 	}
 	content := fmt.Sprintf(text, importStr, FirstCharToUpper(tableName), strings.TrimRight(str, "\n"), FirstCharToUpper(tableName), tableName)
 	_, err := os.Stat(modelPath)
