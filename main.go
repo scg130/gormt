@@ -16,10 +16,11 @@ type Column struct {
 }
 
 var dataTypes = map[string]string{
-	"tinyint":  " int",
-	"bigint":   " int",
+	"tinyint":  " int8",
+	"bigint":   " int64",
 	"int":      " int",
 	"varchar":  " string",
+	"char":     " string",
 	"text":     " string",
 	"datetime": " time.Time",
 	"date":     " time.Time",
