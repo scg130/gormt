@@ -16,8 +16,13 @@ type Column struct {
 }
 
 var dataTypes = map[string]string{
-	"int":     " int",
-	"varchar": " string",
+	"tinyint":  " int",
+	"bigint":   " int",
+	"int":      " int",
+	"varchar":  " string",
+	"text":     " string",
+	"datetime": " time.Time",
+	"date":     " time.Time",
 }
 
 func main() {
@@ -30,6 +35,8 @@ func main() {
 	db.Raw(sql, tableName).Scan(&columns)
 	text := `package model
 
+%s
+
 type %s struct{
 %s
 }
@@ -39,11 +46,16 @@ func (*%s) TableName() string {
 }
 `
 	str := ""
+	importStr := ""
 	for _, v := range columns {
+
+		if v.DataType == "date" || v.DataType == "datetime" {
+			importStr = `import "time"`
+		}
 		tag := fmt.Sprintf(`json:"%s" db:"%s"`, v.Name, v.Name)
 		str += "\t" + translateName(v.Name) + dataTypes[v.DataType] + "\t`" + tag + "`" + "\n"
 	}
-	content := fmt.Sprintf(text, FirstCharToUpper(tableName), strings.TrimRight(str, "\n"), FirstCharToUpper(tableName), tableName)
+	content := fmt.Sprintf(text, importStr, FirstCharToUpper(tableName), strings.TrimRight(str, "\n"), FirstCharToUpper(tableName), tableName)
 	_, err := os.Stat(modelPath)
 	if err != nil {
 		if os.IsNotExist(err) {
