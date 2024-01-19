@@ -24,7 +24,7 @@ var dataTypes = map[string]string{
 	"text":     " string",
 	"datetime": " time.Time",
 	"date":     " time.Time",
-	//"json":     " string",
+	"decimal":  "float64",
 }
 
 func main() {
