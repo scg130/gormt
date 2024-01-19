@@ -28,7 +28,7 @@ var dataTypes = map[string]string{
 }
 
 func main() {
-	tableName := "test"
+	tableName := "union_apply_new"
 	filename := tableName + ".go"
 	modelPath := "./model"
 	db := initdb()
@@ -58,7 +58,7 @@ func (m *%s) TableName() string {
 			str += "\t" + translateName(v.Name) + dataTypes[v.DataType] + "\t`" + tag + "`" + "\n"
 		}
 	}
-	content := fmt.Sprintf(text, importStr, FirstCharToUpper(tableName), strings.TrimRight(str, "\n"), FirstCharToUpper(tableName), tableName)
+	content := fmt.Sprintf(text, importStr, translateName(tableName), strings.TrimRight(str, "\n"), translateName(tableName), tableName)
 	_, err := os.Stat(modelPath)
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -92,7 +92,7 @@ func FirstCharToUpper(str string) string {
 func initdb() *gorm.DB {
 	connStr := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		"root",
-		"123456",
+		"smd013012",
 		"192.168.1.130",
 		3306,
 		"test",
