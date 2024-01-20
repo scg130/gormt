@@ -16,19 +16,19 @@ type Column struct {
 }
 
 var dataTypes = map[string]string{
-	"tinyint":  " int8",
-	"bigint":   " int64",
-	"int":      " int",
-	"varchar":  " string",
-	"char":     " string",
-	"text":     " string",
-	"datetime": " time.Time",
-	"date":     " time.Time",
+	"tinyint":  "int8",
+	"bigint":   "int64",
+	"int":      "int",
+	"varchar":  "string",
+	"char":     "string",
+	"text":     "string",
+	"datetime": "time.Time",
+	"date":     "time.Time",
 	"decimal":  "float64",
 }
 
 func main() {
-	tableName := "union_apply_new"
+	tableName := "d_anchor_settlement"
 	filename := tableName + ".go"
 	modelPath := "./model"
 	db := initdb()
@@ -55,7 +55,7 @@ func (m *%s) TableName() string {
 		}
 		tag := fmt.Sprintf(`json:"%s" gorm:"column:%s"`, v.Name, v.Name)
 		if _, ok := dataTypes[v.DataType]; ok {
-			str += "\t" + translateName(v.Name) + dataTypes[v.DataType] + "\t`" + tag + "`" + "\n"
+			str += "\t" + translateName(v.Name) + "\t" + dataTypes[v.DataType] + "\t`" + tag + "`" + "\n"
 		}
 	}
 	content := fmt.Sprintf(text, importStr, translateName(tableName), strings.TrimRight(str, "\n"), translateName(tableName), tableName)
