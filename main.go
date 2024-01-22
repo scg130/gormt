@@ -13,6 +13,7 @@ import (
 type Column struct {
 	Name     string `json:"name"`
 	DataType string `json:"data_type"`
+	Comment  string `json:"comment"`
 }
 
 var dataTypes = map[string]string{
@@ -32,7 +33,7 @@ func main() {
 	filename := tableName + ".go"
 	modelPath := "./model"
 	db := initdb()
-	sql := "select COLUMN_NAME as name,DATA_TYPE as data_type from information_schema.COLUMNS where TABLE_NAME=?"
+	sql := "select COLUMN_NAME as name,DATA_TYPE as data_type,COLUMN_COMMENT as comment from information_schema.COLUMNS where TABLE_NAME=?"
 	columns := make([]Column, 0)
 	db.Raw(sql, tableName).Scan(&columns)
 	text := `package model
@@ -50,12 +51,13 @@ func (m *%s) TableName() string {
 	str := ""
 	importStr := ""
 	for _, v := range columns {
+		fmt.Println(v.Comment)
 		if v.DataType == "date" || v.DataType == "datetime" {
 			importStr = `import "time"`
 		}
 		tag := fmt.Sprintf(`json:"%s" gorm:"column:%s"`, v.Name, v.Name)
 		if _, ok := dataTypes[v.DataType]; ok {
-			str += "\t" + translateName(v.Name) + "\t" + dataTypes[v.DataType] + "\t`" + tag + "`" + "\n"
+			str += "\t" + translateName(v.Name) + "\t" + dataTypes[v.DataType] + "\t`" + tag + "`" + "\t//" + v.Comment + "\n"
 		}
 	}
 	content := fmt.Sprintf(text, importStr, translateName(tableName), strings.TrimRight(str, "\n"), translateName(tableName), tableName)
