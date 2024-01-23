@@ -51,7 +51,6 @@ func (m *%s) TableName() string {
 	str := ""
 	importStr := ""
 	for _, v := range columns {
-		fmt.Println(v.Comment)
 		if v.DataType == "date" || v.DataType == "datetime" {
 			importStr = `import "time"`
 		}
