@@ -17,9 +17,9 @@ type Column struct {
 }
 
 var dataTypes = map[string]string{
-	"tinyint":  "int8",
+	"tinyint":  "int64",
 	"bigint":   "int64",
-	"int":      "int",
+	"int":      "int64",
 	"varchar":  "string",
 	"char":     "string",
 	"text":     "string",
@@ -29,7 +29,7 @@ var dataTypes = map[string]string{
 }
 
 func main() {
-	tableName := "d_anchor_settlement"
+	tableName := "l_coin_gifts"
 	filename := tableName + ".go"
 	modelPath := "./model"
 	db := initdb()
