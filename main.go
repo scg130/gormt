@@ -29,13 +29,14 @@ var dataTypes = map[string]string{
 }
 
 func main() {
-	tableName := "l_coin_gifts"
+	database := "yoyo_chat"
+	tableName := "l_chat"
 	filename := tableName + ".go"
 	modelPath := "./model"
 	db := initdb()
-	sql := "select COLUMN_NAME as name,DATA_TYPE as data_type,COLUMN_COMMENT as comment from information_schema.COLUMNS where TABLE_NAME=?"
+	sql := "select COLUMN_NAME as name,DATA_TYPE as data_type,COLUMN_COMMENT as comment from information_schema.COLUMNS where TABLE_SCHEMA=? and  TABLE_NAME=?"
 	columns := make([]Column, 0)
-	db.Raw(sql, tableName).Scan(&columns)
+	db.Raw(sql, database, tableName).Scan(&columns)
 	text := `package model
 
 %s
@@ -93,10 +94,10 @@ func FirstCharToUpper(str string) string {
 func initdb() *gorm.DB {
 	connStr := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		"root",
-		"smd013012",
-		"192.168.1.130",
-		3306,
-		"test",
+		"huoyu789",
+		"47.104.186.50",
+		13306,
+		"yoyo_chat",
 	)
 
 	db, err := gorm.Open("mysql", connStr)
