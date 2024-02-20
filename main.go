@@ -17,20 +17,21 @@ type Column struct {
 }
 
 var dataTypes = map[string]string{
-	"tinyint":  "int64",
-	"bigint":   "int64",
-	"int":      "int64",
-	"varchar":  "string",
-	"char":     "string",
-	"text":     "string",
-	"datetime": "time.Time",
-	"date":     "time.Time",
-	"decimal":  "float64",
+	"tinyint":   "int64",
+	"bigint":    "int64",
+	"int":       "int64",
+	"varchar":   "string",
+	"char":      "string",
+	"text":      "string",
+	"datetime":  "time.Time",
+	"date":      "time.Time",
+	"decimal":   "float64",
+	"timestamp": "time.Time",
 }
 
 func main() {
 	database := "yoyo_chat"
-	tableName := "l_chat"
+	tableName := "union_payouts_new"
 	filename := tableName + ".go"
 	modelPath := "./model"
 	db := initdb()
@@ -52,7 +53,7 @@ func (m *%s) TableName() string {
 	str := ""
 	importStr := ""
 	for _, v := range columns {
-		if v.DataType == "date" || v.DataType == "datetime" {
+		if v.DataType == "date" || v.DataType == "datetime" || v.DataType == "timestamp" {
 			importStr = `import "time"`
 		}
 		tag := fmt.Sprintf(`json:"%s" gorm:"column:%s"`, v.Name, v.Name)
