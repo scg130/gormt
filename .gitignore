@@ -1,2 +1,3 @@
 model/
 .idea
+gorm_model/db.go

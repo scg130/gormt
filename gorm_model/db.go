@@ -11,7 +11,7 @@ func init() {
 	connStr := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		"root",
 		"huoyu789",
-		"",
+		"47.104.186.50",
 		13306,
 		"yoyo_chat",
 	)
