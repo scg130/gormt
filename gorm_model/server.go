@@ -3,10 +3,8 @@ package gorm_model
 import (
 	"fmt"
 	"strings"
-	"time"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/jinzhu/gorm"
 )
 
 func Run() {
@@ -31,23 +29,4 @@ func Run() {
 	}
 	content := fmt.Sprintf(text, importStr, translateName(tableName), strings.TrimRight(str, "\n"), translateName(tableName), tableName)
 	saveFile(modelPath, filename, content)
-}
-
-func init() {
-	connStr := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-		"root",
-		"huoyu789",
-		"47.104.186.50",
-		13306,
-		"yoyo_chat",
-	)
-
-	db, err = gorm.Open("mysql", connStr)
-	if err != nil || db == nil {
-		panic(err)
-	}
-	db.DB().SetMaxIdleConns(3)
-	db.DB().SetMaxOpenConns(20)
-	//db = db.LogMode(true)
-	db.DB().SetConnMaxLifetime(time.Duration(60) * time.Second)
 }
